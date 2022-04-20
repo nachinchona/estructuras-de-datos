@@ -51,22 +51,33 @@ public class Lista {
 
     public Object recuperar(int pos) {
         //precondicion: la posicion es valida
-        int i = 1;
-        Nodo aux = this.cabecera;
-        while (i != pos) {
-            aux = aux.getEnlace();
-            i++;
+        Object elem = null;
+        if (!(pos <= 0 || pos > this.longitud())) {
+            int i = 1;
+            Nodo aux = this.cabecera;
+            while (i < pos) {
+                aux = aux.getEnlace();
+                i++;
+            }
+            elem = aux.getElemento();
         }
-        return aux.getElemento();
+        return elem;
     }
 
     public int localizar(Object elem) {
         int pos = -1;
         Nodo aux = this.cabecera;
+        boolean encontro = false;
         int i = 1;
-        while (aux.getElemento() != elem) {
-            aux = aux.getEnlace();
-            i++;
+        int longitud = this.longitud();
+        while(i <= longitud && !encontro){
+            encontro = elem.equals(aux.getElemento());
+            if(encontro){
+                pos = i;
+            }else{
+                aux = aux.getEnlace();
+                i++;
+            }          
         }
         return pos;
     }
@@ -95,7 +106,7 @@ public class Lista {
     public Lista clone() {
         Lista clon = new Lista();
         if (this.cabecera != null) {
-            Nodo aux = this.cabecera.getEnlace();           
+            Nodo aux = this.cabecera.getEnlace();
             Nodo nuevo;
             int longitud = this.longitud();
             clon.cabecera = new Nodo(this.cabecera.getElemento(), clon.cabecera);
@@ -118,7 +129,11 @@ public class Lista {
             toString = "LISTA VACIA";
         } else {
             for (int i = 1; i <= longitud; i++) {
-                toString = toString + aux.getElemento().toString();
+                if (i == 1) {
+                    toString = toString + aux.getElemento().toString();
+                } else {
+                    toString = toString + " / " + aux.getElemento().toString();
+                }
                 aux = aux.getEnlace();
             }
         }
