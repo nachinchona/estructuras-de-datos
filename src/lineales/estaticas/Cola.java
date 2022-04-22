@@ -4,7 +4,7 @@ public class Cola {
 
     private int frente;
     private int fin;
-    private static final int TAMANIO = 5;
+    private static final int TAMANIO = 10;
     private Object[] arreglo;
 
     public Cola() {
@@ -15,7 +15,7 @@ public class Cola {
 
     public boolean poner(Object elem) {
         boolean exito;
-        if (this.frente != this.fin + 1) {
+        if (this.frente != (this.fin + 1)%TAMANIO) {
             this.arreglo[this.fin] = elem;
             this.fin = (this.fin + 1) % TAMANIO;
             exito = true;
@@ -65,9 +65,9 @@ public class Cola {
             clon.fin = this.fin;
             clon.frente = this.frente;
             int i = frente;
-            while (i != fin) {
+            while (i != fin && i < TAMANIO) {
                 clon.arreglo[i] = this.arreglo[i];
-                i++;
+                i = (i+1)%TAMANIO;
             }
         }
         return clon;
@@ -79,7 +79,7 @@ public class Cola {
         if (frente == fin) {
             toString = "COLA VACIA";
         } else {
-            while (i != fin) {
+            while (i != fin && i < TAMANIO) {
                 if (i == frente) {
                     toString = this.arreglo[i].toString();
                 } else {

@@ -6,7 +6,7 @@ import lineales.dinamicas.Pila;
 /**
  *
  * @author Catedra EDAT - FAI - UNCOMA 
- * Ultima modificación: 22/04/2021
+ * Ultima modificacion: 22/04/2021
  *
  */
 public class TestingPila {
