@@ -75,26 +75,24 @@ public class ArbolBin {
     }
     
     public int altura(){
-        return maxDepth(this.raiz);
+        return alturaPR(this.raiz);
     }
     
-    private int maxDepth(NodoArbol nodo){
-        if (nodo == null)
-            return -1;
-        else
-        {
-            /* compute the depth of each subtree */
-            int lDepth = maxDepth(nodo.getIzquierdo());
-            int rDepth = maxDepth(nodo.getDerecho());
-  
-            /* use the larger one */
-            if (lDepth > rDepth)
-                return (lDepth + 1);
-             else
-                return (rDepth + 1);
+    public Lista listarPorNivel (){
+        Lista lista = new Lista();
+        int altura = this.altura();
+        for (int i = 0; i <= altura; i++) {
+            nivelPR(this.raiz, lista, i);
+        }
+        return lista;
+    }
+    
+    private void nivelPR(NodoArbol nodo, Lista temp, int nivel){
+        if (nodo != null) {
+            
         }
     }
-
+    
     public Lista listarPreorden() {
         Lista lista = new Lista();
         listarPreordenPR(this.raiz, lista);
@@ -111,11 +109,19 @@ public class ArbolBin {
         Lista lista = new Lista();
         listarPosorden(this.raiz, lista);
         return lista;
-    }
-    
+    }    
 
     private int alturaPR(NodoArbol nodo){
-        int altura = 0;
+        int altura = -1;
+        if (nodo != null) {
+            int alturaSubArbolIzq = alturaPR(nodo.getIzquierdo());
+            int alturaSubArbolDer = alturaPR(nodo.getDerecho());
+            if (alturaSubArbolIzq > alturaSubArbolDer) {
+                altura = alturaSubArbolIzq + 1;
+            }else{
+                altura = alturaSubArbolDer + 1;
+            }
+        }
         
         return altura;
     }
