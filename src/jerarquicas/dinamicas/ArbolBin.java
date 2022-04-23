@@ -1,6 +1,7 @@
 package jerarquicas.dinamicas;
 
 import lineales.dinamicas.Lista;
+import lineales.dinamicas.Cola;
 
 /**
  *
@@ -73,26 +74,28 @@ public class ArbolBin {
         }
         return toString;
     }
-    
-    public int altura(){
-        return alturaPR(this.raiz);
-    }
-    
-    public Lista listarPorNivel (){
+
+    public Lista listarPorNivel() {
         Lista lista = new Lista();
-        int altura = this.altura();
-        for (int i = 0; i <= altura; i++) {
-            nivelPR(this.raiz, lista, i);
+        
+        if(this.raiz != null){
+            Cola cola = new Cola();
+            cola.poner(this.raiz);
+            while(!cola.esVacia()){
+                NodoArbol aux = (NodoArbol) cola.obtenerFrente();
+                lista.insertar(aux.getElem(), lista.longitud()+1);
+                cola.sacar();
+                if (aux.getIzquierdo() != null) {
+                    cola.poner(aux.getIzquierdo());
+                }
+                if (aux.getDerecho() != null) {
+                    cola.poner(aux.getDerecho());
+                }
+            }
         }
         return lista;
     }
-    
-    private void nivelPR(NodoArbol nodo, Lista temp, int nivel){
-        if (nodo != null) {
-            
-        }
-    }
-    
+
     public Lista listarPreorden() {
         Lista lista = new Lista();
         listarPreordenPR(this.raiz, lista);
@@ -109,20 +112,24 @@ public class ArbolBin {
         Lista lista = new Lista();
         listarPosorden(this.raiz, lista);
         return lista;
-    }    
+    }
 
-    private int alturaPR(NodoArbol nodo){
+    public int altura() {
+        return alturaPR(this.raiz);
+    }
+
+    private int alturaPR(NodoArbol nodo) {
         int altura = -1;
         if (nodo != null) {
             int alturaSubArbolIzq = alturaPR(nodo.getIzquierdo());
             int alturaSubArbolDer = alturaPR(nodo.getDerecho());
             if (alturaSubArbolIzq > alturaSubArbolDer) {
                 altura = alturaSubArbolIzq + 1;
-            }else{
+            } else {
                 altura = alturaSubArbolDer + 1;
             }
         }
-        
+
         return altura;
     }
 
