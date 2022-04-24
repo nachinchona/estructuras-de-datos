@@ -1,5 +1,4 @@
 package jerarquicas.test;
-import java.util.Scanner;
 import jerarquicas.dinamicas.ArbolBin;
 public class TestingArbol {
 
@@ -24,7 +23,8 @@ public class TestingArbol {
         System.out.println(arbolito.listarPosorden().toString());
         System.out.println("recorrido por nivel");
         System.out.println(arbolito.listarPorNivel().toString());
-        System.out.println("altura: "+arbolito.altura());
+        System.out.println("altura: "+arbolito.altura());      
+        System.out.println("nivel "+arbolito.nivel('P'));
     }
 
 }

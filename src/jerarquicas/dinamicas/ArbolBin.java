@@ -8,20 +8,20 @@ import lineales.dinamicas.Cola;
  * @author ignacio.navarro
  */
 public class ArbolBin {
-
+    
     private NodoArbol raiz;
-
+    
     public ArbolBin() {
         this.raiz = null;
     }
-
+    
     public boolean insertar(Object elemNuevo, Object elemPadre, char lugar) {
         boolean exito = true;
         if (this.raiz == null) {
             this.raiz = new NodoArbol(elemNuevo, null, null);
         } else {
             NodoArbol nPadre = obtenerNodo(this.raiz, elemPadre);
-
+            
             if (nPadre != null) {
                 if (lugar == 'I' && nPadre.getIzquierdo() == null) {
                     nPadre.setIzquierdo(new NodoArbol(elemNuevo, null, null));
@@ -36,16 +36,16 @@ public class ArbolBin {
         }
         return exito;
     }
-
+    
     public boolean esVacio() {
         return this.raiz == null;
     }
-
+    
     public String toString() {
         String toString = toStringPR(this.raiz);
         return toString;
     }
-
+    
     private String toStringPR(NodoArbol nodo) {
         String toString = "Arbol vacio";
         if (nodo != null) {
@@ -54,7 +54,7 @@ public class ArbolBin {
             NodoArbol hijoDer = nodo.getDerecho();
             if (hijoIzq != null) {
                 toString = toString + ", H.I: " + hijoIzq.getElem().toString();
-
+                
             } else {
                 toString = toString + ", H.I: -";
             }
@@ -63,27 +63,49 @@ public class ArbolBin {
             } else {
                 toString = toString + ", H.D: -\n";
             }
-
+            
             if (hijoIzq != null) {
                 toString = toString + toStringPR(hijoIzq);
             }
-
+            
             if (hijoDer != null) {
                 toString = toString + toStringPR(hijoDer);
             }
         }
         return toString;
     }
-
+    
+    public int nivel(Object buscado) {
+        int nivel;
+        nivel = nivelPR(this.raiz, buscado, 0);
+        
+        return nivel;
+    }
+    
+    private int nivelPR(NodoArbol nodo, Object buscado, int nivel) {
+        int nivelRetorno = -1;
+        if (nodo != null) {
+            if (!nodo.getElem().equals(buscado)) {
+                nivelRetorno = nivelPR(nodo.getIzquierdo(), buscado, nivel + 1);
+                if (nivelRetorno == -1) {
+                    nivelRetorno = nivelPR(nodo.getDerecho(), buscado, nivel + 1);
+                }
+            }else{
+                nivelRetorno = nivel;
+            }
+        }
+        return nivelRetorno;
+    }
+    
     public Lista listarPorNivel() {
         Lista lista = new Lista();
         
-        if(this.raiz != null){
+        if (this.raiz != null) {
             Cola cola = new Cola();
             cola.poner(this.raiz);
-            while(!cola.esVacia()){
+            while (!cola.esVacia()) {
                 NodoArbol aux = (NodoArbol) cola.obtenerFrente();
-                lista.insertar(aux.getElem(), lista.longitud()+1);
+                lista.insertar(aux.getElem(), lista.longitud() + 1);
                 cola.sacar();
                 if (aux.getIzquierdo() != null) {
                     cola.poner(aux.getIzquierdo());
@@ -95,29 +117,29 @@ public class ArbolBin {
         }
         return lista;
     }
-
+    
     public Lista listarPreorden() {
         Lista lista = new Lista();
         listarPreordenPR(this.raiz, lista);
         return lista;
     }
-
+    
     public Lista listarInorden() {
         Lista lista = new Lista();
         listarInordenPR(this.raiz, lista);
         return lista;
     }
-
+    
     public Lista listarPosorden() {
         Lista lista = new Lista();
         listarPosorden(this.raiz, lista);
         return lista;
     }
-
+    
     public int altura() {
         return alturaPR(this.raiz);
     }
-
+    
     private int alturaPR(NodoArbol nodo) {
         int altura = -1;
         if (nodo != null) {
@@ -129,10 +151,10 @@ public class ArbolBin {
                 altura = alturaSubArbolDer + 1;
             }
         }
-
+        
         return altura;
     }
-
+    
     private void listarPosorden(NodoArbol nodo, Lista temp) {
         if (nodo != null) {
             listarPosorden(nodo.getIzquierdo(), temp);
@@ -140,7 +162,7 @@ public class ArbolBin {
             temp.insertar(nodo.getElem(), temp.longitud() + 1);
         }
     }
-
+    
     private void listarInordenPR(NodoArbol nodo, Lista temp) {
         if (nodo != null) {
             listarInordenPR(nodo.getIzquierdo(), temp);
@@ -148,7 +170,7 @@ public class ArbolBin {
             listarInordenPR(nodo.getDerecho(), temp);
         }
     }
-
+    
     private void listarPreordenPR(NodoArbol nodo, Lista temp) {
         if (nodo != null) {
             temp.insertar(nodo.getElem(), temp.longitud() + 1);
@@ -156,11 +178,11 @@ public class ArbolBin {
             listarPreordenPR(nodo.getDerecho(), temp);
         }
     }
-
+    
     public Object padre(Object buscado) {
         return obtenerNodoPadre(this.raiz, buscado).getElem();
     }
-
+    
     private NodoArbol obtenerNodoPadre(NodoArbol n, Object buscado) {
         NodoArbol resultado = null;
         if (n != null) {
@@ -177,21 +199,21 @@ public class ArbolBin {
                     }
                 }
             }
-
+            
             if (resultado == null) {
                 resultado = obtenerNodoPadre(izq, buscado);
                 if (resultado == null) {
                     resultado = obtenerNodoPadre(der, buscado);
                 }
             }
-
+            
         }
         return resultado;
     }
-
+    
     private NodoArbol obtenerNodo(NodoArbol n, Object buscado) {
         NodoArbol resultado = null;
-
+        
         if (n != null) {
             if (n.getElem().equals(buscado)) {
                 resultado = n;
