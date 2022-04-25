@@ -83,6 +83,7 @@ public class ArbolBin {
     }
     
     private int nivelPR(NodoArbol nodo, Object buscado, int nivel) {
+        //nivel empieza valiendo 0
         int nivelRetorno = -1;
         if (nodo != null) {
             if (!nodo.getElem().equals(buscado)) {
@@ -91,6 +92,7 @@ public class ArbolBin {
                     nivelRetorno = nivelPR(nodo.getDerecho(), buscado, nivel + 1);
                 }
             }else{
+                //si el elemento coincide, devuelve el nivel en el cual el algoritmo esta trabajando
                 nivelRetorno = nivel;
             }
         }
@@ -225,5 +227,35 @@ public class ArbolBin {
             }
         }
         return resultado;
+    }
+    
+    public void vaciar() {
+        this.raiz = null;
+    }
+    
+    public ArbolBin clone(){
+        ArbolBin clon = new ArbolBin();
+        if (this.raiz != null) {
+            clon.raiz = new NodoArbol(this.raiz.getElem(), null, null);
+            clonePR(this.raiz, clon.raiz);
+        }
+        return clon;
+    }
+    
+    private void clonePR(NodoArbol nodoAClonar, NodoArbol nodoClon){
+        NodoArbol hijoIzq = nodoAClonar.getIzquierdo();
+        NodoArbol hijoDer = nodoAClonar.getDerecho();
+        //primero tomamos el hijo izq si no es null
+        if (nodoAClonar.getIzquierdo() != null) {
+            NodoArbol hijoIzqClon = new NodoArbol(hijoIzq.getElem(), null, null);
+            nodoClon.setIzquierdo(hijoIzq);
+            clonePR(hijoIzq, hijoIzqClon);
+        }
+        //luego el hijo derecho
+        if (nodoAClonar.getDerecho() != null) {
+            NodoArbol hijoDerClon = new NodoArbol(hijoDer.getElem(), null, null);
+            nodoClon.setDerecho(hijoDer);
+            clonePR(hijoDer, hijoDerClon);
+        }         
     }
 }

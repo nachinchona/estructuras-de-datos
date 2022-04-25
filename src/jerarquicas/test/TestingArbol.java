@@ -24,7 +24,14 @@ public class TestingArbol {
         System.out.println("recorrido por nivel");
         System.out.println(arbolito.listarPorNivel().toString());
         System.out.println("altura: "+arbolito.altura());      
-        System.out.println("nivel "+arbolito.nivel('P'));
+        System.out.println("nivel de g"+arbolito.nivel('G'));
+        System.out.println("");
+        System.out.println("clono arbol en arbolillo");
+        arbolillo = arbolito.clone();
+        System.out.println("toString arbolillo");
+        System.out.println(arbolillo.toString());
+        arbolito.vaciar();
+        System.out.println(arbolito.toString());
     }
 
 }
