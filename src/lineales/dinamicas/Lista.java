@@ -70,14 +70,14 @@ public class Lista {
         boolean encontro = false;
         int i = 1;
         int longitud = this.longitud();
-        while(i <= longitud && !encontro){
+        while (i <= longitud && !encontro) {
             encontro = elem.equals(aux.getElemento());
-            if(encontro){
+            if (encontro) {
                 pos = i;
-            }else{
+            } else {
                 aux = aux.getEnlace();
                 i++;
-            }          
+            }
         }
         return pos;
     }
@@ -140,4 +140,57 @@ public class Lista {
         return toString;
     }
 
+    public Lista obtenerMultiplos(int num) {
+        int i = 1;
+        Lista listaMultiplos = new Lista();
+        Nodo aux = this.cabecera;
+        Nodo nuevaCabecera = null;
+
+        while (aux != null) {
+            if (nuevaCabecera == null && i == num) {
+                nuevaCabecera = new Nodo(aux.getElemento(), null);
+                listaMultiplos.cabecera = nuevaCabecera;
+            } else {
+                if (nuevaCabecera != null && i % num == 0) {
+                    nuevaCabecera.setEnlace(new Nodo(aux.getElemento(), null));
+                    nuevaCabecera = nuevaCabecera.getEnlace();
+                }
+            }
+
+            aux = aux.getEnlace();
+            i++;
+        }
+
+        return listaMultiplos;
+    }
+
+    public void eliminarApariciones(Object x) {
+        Nodo aux = this.cabecera;
+        Nodo anterior = null;
+        while (aux != null) {     
+            if (aux.getElemento().equals(x)) {
+                if (aux == this.cabecera) {
+                    this.cabecera = this.cabecera.getEnlace();
+                } else {
+                    anterior.setEnlace(aux.getEnlace());
+                }
+            }
+            anterior = aux;
+            aux = aux.getEnlace();
+        }
+    }
+
+    /* public Lista obtenerMultiplos(int n){
+        int longitud = this.longitud();
+        Lista nueva = new Lista();
+        int longitudNueva = nueva.longitud();
+        Nodo aux = this.cabecera;
+        for (int i = 1; i <= longitud; i++) {
+            if (i % n == 0) {
+                nueva.insertar(aux.getElemento(), longitudNueva +1);
+            }
+            aux = aux.getEnlace();
+        }
+        return nueva;
+    } */
 }
