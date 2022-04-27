@@ -62,7 +62,9 @@ public class Cola {
 
     public Cola clone() {
         Cola clon = new Cola();
-        clonePR(clon, this.frente);
+        if (this.frente != null) {
+            clonePR(clon, this.frente);
+        }
         return clon;
     }
 
@@ -70,27 +72,34 @@ public class Cola {
         String toString = toStringPR(this.frente);
         return toString;
     }
-    
+
     private String toStringPR(Nodo temp) {
         String toString = "";
         if (temp != null) {
             Nodo enlace = temp.getEnlace();
+            if (enlace != null) {
+                toString = temp.getElemento().toString() + " / " + toStringPR(enlace);
+            }else{
+                toString = temp.getElemento().toString();
+            }
             
-            toString = temp.getElemento().toString() + " / " + toStringPR(enlace);
         }
         return toString;
     }
 
     private void clonePR(Cola clon, Nodo temp) {
         if (temp != null) {
-            Nodo enlace = temp.getEnlace();
-            Nodo aux;
-            if (enlace == null) {
-                clon.fin = clon.frente;
-            }else{
-                clonePR(clon, enlace);
-            }          
-            clon.frente = new Nodo(temp.getElemento(), clon.frente);
-        }  
+            Nodo aux = new Nodo(temp.getElemento(), null);
+            if (temp == this.frente) {
+                clon.frente = aux;
+                clon.fin = aux;
+            }
+            clon.fin.setEnlace(aux);
+            clon.fin = aux;
+            Nodo siguiente = temp.getEnlace();
+            if (siguiente != null) {
+                clonePR(clon, siguiente);
+            }
+        }
     }
 }

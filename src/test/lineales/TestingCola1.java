@@ -28,10 +28,20 @@ public class TestingCola1 {
         Cola cola2 = cola1.clone();
         System.out.println("to string clon");
         System.out.println(cola2.toString());
-
+        cola2.poner(5);
+        cola2.poner(6);
+        cola2.poner(7);
+        System.out.println("to string clon");
+        System.out.println(cola2.toString());
         System.out.println("frente clon");
         System.out.println(cola2.obtenerFrente());
-    
+        System.out.println("to string");
+        System.out.println(cola1.toString());
+        cola1.vaciar();
+        System.out.println("to string clon");
+        System.out.println(cola2.toString());
+        
+
     }
 
 }

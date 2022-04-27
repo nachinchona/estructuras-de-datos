@@ -141,24 +141,27 @@ public class Lista {
     }
 
     public Lista obtenerMultiplos(int num) {
-        int i = 1;
+
         Lista listaMultiplos = new Lista();
-        Nodo aux = this.cabecera;
-        Nodo nuevaCabecera = null;
+        if (num >= 1) {
+            int i = 1;
+            Nodo aux = this.cabecera;
+            Nodo nuevaCabecera = null;
 
-        while (aux != null) {
-            if (nuevaCabecera == null && i == num) {
-                nuevaCabecera = new Nodo(aux.getElemento(), null);
-                listaMultiplos.cabecera = nuevaCabecera;
-            } else {
-                if (nuevaCabecera != null && i % num == 0) {
-                    nuevaCabecera.setEnlace(new Nodo(aux.getElemento(), null));
-                    nuevaCabecera = nuevaCabecera.getEnlace();
+            while (aux != null) {
+                if (nuevaCabecera == null && i == num) {
+                    nuevaCabecera = new Nodo(aux.getElemento(), null);
+                    listaMultiplos.cabecera = nuevaCabecera;
+                } else {
+                    if (nuevaCabecera != null && i % num == 0) {
+                        nuevaCabecera.setEnlace(new Nodo(aux.getElemento(), null));
+                        nuevaCabecera = nuevaCabecera.getEnlace();
+                    }
                 }
-            }
 
-            aux = aux.getEnlace();
-            i++;
+                aux = aux.getEnlace();
+                i++;
+            }
         }
 
         return listaMultiplos;
@@ -167,7 +170,7 @@ public class Lista {
     public void eliminarApariciones(Object x) {
         Nodo aux = this.cabecera;
         Nodo anterior = null;
-        while (aux != null) {     
+        while (aux != null) {
             if (aux.getElemento().equals(x)) {
                 if (aux == this.cabecera) {
                     this.cabecera = this.cabecera.getEnlace();

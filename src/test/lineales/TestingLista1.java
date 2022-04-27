@@ -17,6 +17,9 @@ public class TestingLista1 {
         
         System.out.println(lista.toString());
         System.out.println(lista.longitud());
+        Lista nueva = lista.obtenerMultiplos(-2);
+        System.out.println(nueva.toString());
+        
         
         lista.eliminarApariciones('1');
         System.out.println(lista.toString());
