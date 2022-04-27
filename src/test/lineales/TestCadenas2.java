@@ -5,28 +5,50 @@ import lineales.dinamicas.*;
 public class TestCadenas2 {
 
     public static void main(String[] args) {
-
+        String cuenta = "{[[()]]}";
+        Cola matematica = new Cola();
+        for (int i = 0; i < cuenta.length(); i++) {
+            matematica.poner(cuenta.charAt(i));
+        }
+        System.out.println(verificarBalanceo(matematica));
     }
 
     public static boolean verificarBalanceo(Cola q) {
         Cola clon = q.clone();
         Pila simbolos = new Pila();
-        boolean estaBalanceada = false;
+        boolean estaBalanceada = true;
+        int aCerrar = 0;
         String simbolosAbiertos = "([{";
         String simbolosCerrados = ")]}";
-        while (!clon.esVacia()) {
-            if (simbolosAbiertos.contains((String) clon.obtenerFrente())) {
+        while (estaBalanceada && !clon.esVacia()) {
+            if (simbolosAbiertos.contains(Character.toString((char) clon.obtenerFrente()))) {
                 simbolos.apilar(clon.obtenerFrente());
-            }
-            if (simbolosCerrados.contains((String) clon.obtenerFrente())) {
-                if (!simbolos.esVacia()) {
-                    switch((char)simbolos.obtenerTope()){
-                        case '(': 
+                aCerrar++;
+            } else {
+                if (simbolosCerrados.contains(Character.toString((char) clon.obtenerFrente()))) {
+                    if (!simbolos.esVacia()) {
+                        switch ((char) simbolos.obtenerTope()) {
+                            case '(':
+                                estaBalanceada = clon.obtenerFrente().equals(')'); aCerrar--;
+                                break;
+                            case '[':
+                                estaBalanceada = clon.obtenerFrente().equals(']'); aCerrar--;
+                                break;
+                            case '{':
+                                estaBalanceada = clon.obtenerFrente().equals('}'); aCerrar--;
+                                break;
+                            default:
+                                estaBalanceada = false;
+                        }
+                        simbolos.desapilar();
+                    }else{
+                        estaBalanceada = false;
                     }
                 }
             }
+            clon.sacar();
         }
-
+        estaBalanceada = estaBalanceada && aCerrar == 0;
         return estaBalanceada;
     }
 
