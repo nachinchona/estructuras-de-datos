@@ -52,7 +52,7 @@ public class ArbolBin {
                     }
                 }
             }
-        }else{
+        } else {
             if (nodo1 == null && nodo2 == null) {
                 coincide = true;
             }
@@ -73,12 +73,12 @@ public class ArbolBin {
         if (nodo != null) {
             if (nodo.getIzquierdo() != null) {
                 nodoInv.setDerecho(new NodoArbol(nodo.getIzquierdo().getElem(), null, null));
+                clonarInvPR(nodo.getIzquierdo(), nodoInv.getDerecho());
             }
             if (nodo.getDerecho() != null) {
                 nodoInv.setIzquierdo(new NodoArbol(nodo.getDerecho().getElem(), null, null));
+                clonarInvPR(nodo.getDerecho(), nodoInv.getIzquierdo());
             }
-            clonarInvPR(nodo.getIzquierdo(), nodoInv.getDerecho());
-            clonarInvPR(nodo.getDerecho(), nodoInv.getIzquierdo());
         }
     }
 
@@ -150,6 +150,28 @@ public class ArbolBin {
             }
         }
         return exito;
+    }
+
+    public Lista listarAncestros(Object elem) {
+        Lista l1 = new Lista();
+        listarAncestros(this.raiz, l1, elem);
+        return l1;
+    }
+
+    private void listarAncestros(NodoArbol n, Lista l1, Object elem) {
+        if (n != null) {
+            if (n.getElem().equals(elem)) {
+                l1.insertar(n.getElem(), l1.longitud() + 1);
+            } else {
+                listarAncestros(n.getIzquierdo(), l1, elem);
+                if (l1.esVacia()) {
+                    listarAncestros(n.getDerecho(), l1, elem);
+                }
+                if (!l1.esVacia()) {
+                    l1.insertar(n.getElem(), l1.longitud() + 1);
+                }
+            }
+        }
     }
 
     public boolean esVacio() {
