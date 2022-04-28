@@ -15,6 +15,121 @@ public class ArbolBin {
         this.raiz = null;
     }
 
+    public boolean equals(ArbolBin otro) {
+        boolean equals = equalsPR(this.raiz, otro.raiz);
+        return equals;
+    }
+
+    private boolean equalsPR(NodoArbol nodo1, NodoArbol nodo2) {
+        boolean coincide = false;
+        if (nodo1 != null && nodo2 != null) {
+            if (nodo1.getElem().equals(nodo2.getElem())) {
+                coincide = true;
+            }
+            if (coincide) {
+                if (nodo1.getIzquierdo() != null) {
+                    if (nodo2.getIzquierdo() != null) {
+                        coincide = equalsPR(nodo1.getIzquierdo(), nodo2.getIzquierdo());
+                    } else {
+                        coincide = false;
+                    }
+                } else {
+                    if (nodo2.getIzquierdo() != null) {
+                        coincide = false;
+                    }
+                }
+                if (coincide) {
+                    if (nodo1.getDerecho() != null) {
+                        if (nodo2.getDerecho() != null) {
+                            coincide = equalsPR(nodo1.getDerecho(), nodo2.getDerecho());
+                        } else {
+                            coincide = false;
+                        }
+                    } else {
+                        if (nodo2.getDerecho() != null) {
+                            coincide = false;
+                        }
+                    }
+                }
+            }
+        }else{
+            if (nodo1 == null && nodo2 == null) {
+                coincide = true;
+            }
+        }
+        return coincide;
+    }
+
+    public ArbolBin clonarInvertido() {
+        ArbolBin invertido = new ArbolBin();
+        if (this.raiz != null) {
+            invertido.raiz = new NodoArbol(this.raiz.getElem(), null, null);
+            clonarInvPR(this.raiz, invertido.raiz);
+        }
+        return invertido;
+    }
+
+    private void clonarInvPR(NodoArbol nodo, NodoArbol nodoInv) {
+        if (nodo != null) {
+            if (nodo.getIzquierdo() != null) {
+                nodoInv.setDerecho(new NodoArbol(nodo.getIzquierdo().getElem(), null, null));
+            }
+            if (nodo.getDerecho() != null) {
+                nodoInv.setIzquierdo(new NodoArbol(nodo.getDerecho().getElem(), null, null));
+            }
+            clonarInvPR(nodo.getIzquierdo(), nodoInv.getDerecho());
+            clonarInvPR(nodo.getDerecho(), nodoInv.getIzquierdo());
+        }
+    }
+
+    public Lista frontera() {
+        Lista hojas = new Lista();
+        if (this.raiz != null) {
+            fronteraPR(hojas, this.raiz);
+        }
+        return hojas;
+    }
+
+    private void fronteraPR(Lista hojas, NodoArbol nodo) {
+        if (nodo != null) {
+            if (nodo.getIzquierdo() == null && nodo.getDerecho() == null) {
+                hojas.insertar(nodo.getElem(), hojas.longitud() + 1);
+            } else {
+                fronteraPR(hojas, nodo.getIzquierdo());
+                fronteraPR(hojas, nodo.getDerecho());
+            }
+        }
+    }
+
+    public boolean verificarPatron(Lista patron) {
+        /*Implementar la operación boolean verificarPatron(Lista patron), que recibe por parámetro una lista patron
+        y determine si coincide exactamente con al menos un camino del árbol que comience en la raíz y termine en
+        una hoja. El método debe ser eficiente, es decir, recorrer el árbol lo estrictamente necesario. */
+        boolean coincide = false;
+        if (this.raiz != null) {
+            coincide = verificarPatronPR(patron, this.raiz, 1);
+        }
+        return coincide;
+    }
+
+    private boolean verificarPatronPR(Lista patron, NodoArbol nodo, int pos) {
+        boolean coincide = false;
+        int longitud = patron.longitud();
+        Object elem = patron.recuperar(pos);
+        if (nodo != null) {
+            if (nodo.getElem().equals(elem)) {
+                coincide = true;
+            }
+            if (coincide && pos < longitud) {
+                coincide = verificarPatronPR(patron, nodo.getIzquierdo(), pos + 1);
+                if (!coincide) {
+                    coincide = verificarPatronPR(patron, nodo.getDerecho(), pos + 1);
+                }
+            }
+        }
+        return coincide;
+    }
+
     public boolean insertar(Object elemNuevo, Object elemPadre, char lugar) {
         boolean exito = true;
         if (this.raiz == null) {

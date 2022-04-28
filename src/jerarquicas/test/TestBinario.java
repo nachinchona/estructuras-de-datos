@@ -58,12 +58,12 @@ public class TestBinario {
         System.out.println("Altura de arbol vacio (debe dar -1):  " + a.altura());
         System.out.println("Intento vaciar arbol vacio ");
         a.vaciar();
-        System.out.println("Intento obtener padre de un elemento cualquiera (debe dar null): "+ ((a.padre(10)) == null? sOk : sErr));
-        System.out.println("Intento obtener nivel de un elemento cualquiera (debe dar -1): "+ ((a.nivel(10)) == -1 ? sOk : sErr));
+        System.out.println("Intento obtener padre de un elemento cualquiera (debe dar null): " + ((a.padre(10)) == null ? sOk : sErr));
+        System.out.println("Intento obtener nivel de un elemento cualquiera (debe dar -1): " + ((a.nivel(10)) == -1 ? sOk : sErr));
         System.out.println("toString de arbol vacío: " + a.toString());
         System.out.println();
         System.out.println();
-        
+
         System.out.println("****************************************");
         System.out.println("*          Insercion - altura          *");
         System.out.println("****************************************");
@@ -200,7 +200,7 @@ public class TestBinario {
         System.out.println("\n\n");
         System.out.println(ANSI_YELLOW_BACKGROUND + "----------------------------------------------------------------------------------------------------------"
                 + "----------------------------------------------------------------------------------------" + RESET);
-        /*    System.out.println();
+        System.out.println();
         System.out.println("\n\n**********************************");
         System.out.println("*      Test de FRONTERA          *");
         System.out.println("**********************************\n");
@@ -214,7 +214,7 @@ public class TestBinario {
         System.out.println("");
         System.out.println("Inserto el 50 en el clon " + ((b.insertar(50, null, 'D')) ? sOk : sErr));
         System.out.println("");
-        System.out.println("Frontera de clon con solo raiz.\n Tiene que dar: [ 50 ]  " + b.frontera().toString()); */
+        System.out.println("Frontera de clon con solo raiz.\n Tiene que dar: [ 50 ]  " + b.frontera().toString());
     }
 
 }

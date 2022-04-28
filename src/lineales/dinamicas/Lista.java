@@ -8,6 +8,22 @@ public class Lista {
         this.cabecera = null;
     }
 
+    public void agregarElem(Object nuevo, int x) {
+        int i = 1;
+        Nodo aux = this.cabecera;
+        int nuevaPos = i + x;
+        this.cabecera = new Nodo(nuevo, aux);
+        aux = this.cabecera;
+        while (aux != null) {
+            if (i == nuevaPos) {
+                aux.setEnlace(new Nodo(nuevo, aux.getEnlace()));
+                nuevaPos = i + x + 1;
+            }
+            i++;
+            aux = aux.getEnlace();
+        }
+    }
+
     public boolean insertar(Object elem, int pos) {
         boolean exito = true;
         if (pos < 1 || pos > this.longitud() + 1) {
@@ -132,7 +148,7 @@ public class Lista {
                 if (i == 1) {
                     toString = toString + aux.getElemento().toString();
                 } else {
-                    toString = toString + " / " + aux.getElemento().toString();
+                    toString = toString + "," + aux.getElemento().toString();
                 }
                 aux = aux.getEnlace();
             }
@@ -147,7 +163,6 @@ public class Lista {
             int i = 1;
             Nodo aux = this.cabecera;
             Nodo nuevaCabecera = null;
-
             while (aux != null) {
                 if (nuevaCabecera == null && i == num) {
                     nuevaCabecera = new Nodo(aux.getElemento(), null);
@@ -158,7 +173,6 @@ public class Lista {
                         nuevaCabecera = nuevaCabecera.getEnlace();
                     }
                 }
-
                 aux = aux.getEnlace();
                 i++;
             }
