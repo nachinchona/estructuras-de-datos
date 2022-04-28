@@ -5,11 +5,12 @@ import lineales.dinamicas.*;
 public class TestCadenas2 {
 
     public static void main(String[] args) {
-        String cuenta = "{[[()]]}";
+        String cuenta = "{";
         Cola matematica = new Cola();
         for (int i = 0; i < cuenta.length(); i++) {
             matematica.poner(cuenta.charAt(i));
         }
+        System.out.println(matematica.toString());
         System.out.println(verificarBalanceo(matematica));
     }
 
@@ -75,6 +76,9 @@ public class TestCadenas2 {
                 retorno.poner('#');
             }
             clon.sacar();
+            if (clon.esVacia()) {
+                retorno.sacar();
+            }
         }
         return retorno;
     }

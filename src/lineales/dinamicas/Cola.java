@@ -79,10 +79,10 @@ public class Cola {
             Nodo enlace = temp.getEnlace();
             if (enlace != null) {
                 toString = temp.getElemento().toString() + " / " + toStringPR(enlace);
-            }else{
+            } else {
                 toString = temp.getElemento().toString();
             }
-            
+
         }
         return toString;
     }
@@ -93,9 +93,11 @@ public class Cola {
             if (temp == this.frente) {
                 clon.frente = aux;
                 clon.fin = aux;
+            } else {
+                clon.fin.setEnlace(aux);
+                clon.fin = aux;
             }
-            clon.fin.setEnlace(aux);
-            clon.fin = aux;
+
             Nodo siguiente = temp.getEnlace();
             if (siguiente != null) {
                 clonePR(clon, siguiente);
