@@ -6,19 +6,61 @@ public class TestCadenas2 {
 
     public static void main(String[] args) {
         Lista l1 = new Lista();
-        Lista l2 = new Lista();
         l1.insertar(1, 1);
-        l1.insertar(3, 2);
-        l1.insertar(5, 3);
-        l1.insertar(7, 4);
+        l1.insertar(1, 2);
+        l1.insertar(2, 3);
+        l1.insertar(3, 4);
+        l1.insertar(1, 5);
+        l1.insertar(4, 6);
+        
+        System.out.println(contar2(l1,1,1));
+        System.out.println(esCapicua(l1));
 
-        l2.insertar(2, 1);
-        l2.insertar(4, 2);
-        l2.insertar(6, 3);
-        l2.insertar(8, 4);
-        System.out.println(l1.toString());
-        System.out.println(l2.toString());
-        System.out.println(intercalar(l1, l2).toString());
+    }
+
+    public static int contar(Lista l1, Object elem) {
+        int longitud = l1.longitud();
+        int contador = 0;
+        for (int i = 1; i <= longitud; i++) {
+            if (l1.recuperar(i).equals(elem)) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    public static int contar2(Lista l1, Object elem, int pos) {
+        int contador = 0;
+        int longitud = l1.longitud();
+        if (pos <= longitud) {
+            if (l1.recuperar(pos).equals(elem)) {
+                contador = 1;
+            }
+            contador = contador + contar2(l1, elem, pos + 1);
+        }
+        return contador;
+    }
+
+    public static boolean esCapicua(Lista l1) {
+        boolean sigue = true;
+        int i = 1;
+        int longitud = l1.longitud();
+        Pila P1 = new Pila();
+        Cola Q1 = new Cola();
+        while (i <= longitud) {
+            Object elem = l1.recuperar(i);
+            P1.apilar(elem);
+            Q1.poner(elem);
+            i++;
+        }
+        i = 1;
+        while (sigue && i <= longitud) {
+            sigue = Q1.obtenerFrente().equals(P1.obtenerTope());
+            i++;
+            P1.desapilar();
+            Q1.sacar();
+        }
+        return sigue;
     }
 
     public static Lista intercalar(Lista l1, Lista l2) {
@@ -32,12 +74,13 @@ public class TestCadenas2 {
             longFinal = longitud2;
         }
         int i = 1;
-        while(i <= longFinal){
-            retorno.insertar(l1.recuperar(i), retorno.longitud()+1);
-            retorno.insertar(l2.recuperar(i), retorno.longitud()+1);
+        int length = 1;
+        while (i <= longFinal) {
+            retorno.insertar(l1.recuperar(i), length++);
+            retorno.insertar(l2.recuperar(i), length++);
             i++;
         }
-        
+
         return retorno;
     }
 

@@ -15,6 +15,29 @@ public class ArbolBin {
         this.raiz = null;
     }
 
+    public Lista listarDescendientes1(Object elem) {
+        Lista retorno = new Lista();
+        if (this.raiz != null) {
+            listarDescendientes(retorno, this.raiz, elem);
+        }
+        return retorno;
+    }
+
+    private void listarDescendientes(Lista l1, NodoArbol nodo, Object elem) {
+        if (nodo != null) {
+            if (nodo.getElem().equals(elem) || !l1.esVacia()) {
+                l1.insertar(nodo.getElem(), l1.longitud()+1);
+                listarDescendientes(l1, nodo.getIzquierdo(), elem);
+                listarDescendientes(l1, nodo.getDerecho(), elem);
+            }else{
+                listarDescendientes(l1, nodo.getIzquierdo(), elem);
+                if (l1.esVacia()) {
+                    listarDescendientes(l1, nodo.getDerecho(), elem);
+                }
+            }
+        }
+    }
+
     public boolean equals(ArbolBin otro) {
         boolean equals = equalsPR(this.raiz, otro.raiz);
         return equals;

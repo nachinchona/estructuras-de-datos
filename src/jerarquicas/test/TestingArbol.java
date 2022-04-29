@@ -16,9 +16,7 @@ public class TestingArbol {
         arbolito.insertar('G', 'E', 'I');
         arbolito.insertar('H', 'E', 'D');
         System.out.println(arbolito.toString());
-        System.out.println(arbolito.frontera());
-        ArbolBin inverso = arbolito.clonarInvertido();
-        System.out.println(inverso.toString());
+        System.out.println(arbolito.listarDescendientes1('E'));
     }
 
 }
