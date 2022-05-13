@@ -141,10 +141,12 @@ public class ArbolGen {
     }
 
     public Object padre(Object buscado) {
-        NodoGen nodo = padrePR(this.raiz, buscado);
         Object padre = null;
-        if (nodo != null) {
-            padre = nodo.getElem();
+        if (this.raiz != null && !this.raiz.getElem().equals(buscado)) {
+            NodoGen nodo = padrePR(this.raiz, buscado);
+            if (nodo != null) {
+                padre = nodo.getElem();
+            }
         }
         return padre;
     }
@@ -152,17 +154,16 @@ public class ArbolGen {
     private NodoGen padrePR(NodoGen nodo, Object buscado) {
         NodoGen padre = null;
         if (nodo != null) {
-            if (nodo.getHijoIzquierdo() != null) {
-                NodoGen aux = nodo.getHijoIzquierdo();
-                while (aux != null && padre == null) {
-                    if (aux.getElem().equals(buscado)) {
-                        padre = nodo;
+            NodoGen aux = nodo.getHijoIzquierdo();
+            while (aux != null && padre == null) {
+                if (aux.getElem().equals(buscado)) {
+                    padre = nodo;
+                }else{
+                    if (aux.getHijoIzquierdo() != null) {
+                        padre = padrePR(aux, buscado);
                     }
-                    aux = aux.getHermanoDerecho();
                 }
-                if (padre == null && nodo.getHijoIzquierdo().getHijoIzquierdo() != null) {
-                    padre = padrePR(nodo.getHijoIzquierdo().getHijoIzquierdo(), buscado);
-                }
+                aux = aux.getHermanoDerecho();
             }
         }
         return padre;
