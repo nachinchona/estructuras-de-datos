@@ -19,6 +19,14 @@ public class ArbolGen {
         return pertenece;
     }
 
+    public boolean esVacio() {
+        return this.raiz == null;
+    }
+
+    public void vaciar() {
+        this.raiz = null;
+    }
+
     public Lista listarInorden() {
         Lista salida = new Lista();
         listarInordenPR(this.raiz, salida);
@@ -114,19 +122,50 @@ public class ArbolGen {
             if (nodo.getElem().equals(buscado)) {
                 resultado = nodo;
             } else {
-                NodoGen aux = nodo.getHijoIzquierdo();
-                while (aux != null && resultado == null) {
-                    if (aux.getElem().equals(buscado)) {
-                        resultado = aux;
-                    } else {
-                        if (aux.getHijoIzquierdo() != null) {
-                            resultado = obtenerNodo(aux, buscado);
+                if (nodo.getHijoIzquierdo() != null) {
+                    NodoGen aux = nodo.getHijoIzquierdo();
+                    while (aux != null && resultado == null) {
+                        if (aux.getElem().equals(buscado)) {
+                            resultado = aux;
+                        } else {
+                            if (aux.getHijoIzquierdo() != null) {
+                                resultado = obtenerNodo(aux, buscado);
+                            }
                         }
+                        aux = aux.getHermanoDerecho();
                     }
-                    aux = aux.getHermanoDerecho();
                 }
             }
         }
         return resultado;
     }
+
+    public Object padre(Object buscado) {
+        NodoGen nodo = padrePR(this.raiz, buscado);
+        Object padre = null;
+        if (nodo != null) {
+            padre = nodo.getElem();
+        }
+        return padre;
+    }
+
+    private NodoGen padrePR(NodoGen nodo, Object buscado) {
+        NodoGen padre = null;
+        if (nodo != null) {
+            if (nodo.getHijoIzquierdo() != null) {
+                NodoGen aux = nodo.getHijoIzquierdo();
+                while (aux != null && padre == null) {
+                    if (aux.getElem().equals(buscado)) {
+                        padre = nodo;
+                    }
+                    aux = aux.getHermanoDerecho();
+                }
+                if (padre == null && nodo.getHijoIzquierdo().getHijoIzquierdo() != null) {
+                    padre = padrePR(nodo.getHijoIzquierdo().getHijoIzquierdo(), buscado);
+                }
+            }
+        }
+        return padre;
+    }
+
 }

@@ -15,7 +15,7 @@ public class TestArbolGen {
         arbol.insertar(8, 3);
         arbol.insertar(9, 3);
         System.out.println(arbol.toString());
-        
+        System.out.println(arbol.padre(8).toString());
         System.out.println(arbol.listarInorden().toString());
         System.out.println(arbol.listarPreorden().toString());
     }
