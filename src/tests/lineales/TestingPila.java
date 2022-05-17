@@ -1,4 +1,4 @@
-package test.lineales;
+package tests.lineales;
 
 import lineales.dinamicas.Pila;
 //import lineales.estaticas.Pila;

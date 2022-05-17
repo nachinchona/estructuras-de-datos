@@ -1,4 +1,4 @@
-package test.lineales;
+package tests.propios;
 
 import lineales.dinamicas.Lista;
 

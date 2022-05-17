@@ -1,4 +1,4 @@
-package test.lineales;
+package tests.propios;
 //importo al acalofsd oca cola
 
 import lineales.dinamicas.Cola;

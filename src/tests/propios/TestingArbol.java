@@ -1,4 +1,4 @@
-package tests.jerarquicas;
+package tests.propios;
 import jerarquicas.dinamicas.ArbolBin;
 public class TestingArbol {
 

@@ -141,23 +141,20 @@ public class Lista {
         String toString = "";
         int longitud = this.longitud();
         Nodo aux = this.cabecera;
-        if (aux == null) {
-            toString = "LISTA VACIA";
-        } else {
-            for (int i = 1; i <= longitud; i++) {
-                if (i == 1) {
-                    toString = toString + aux.getElemento().toString();
-                } else {
-                    toString = toString + "," + aux.getElemento().toString();
-                }
-                aux = aux.getEnlace();
+
+        for (int i = 1; i <= longitud; i++) {
+            if (i == 1) {
+                toString = toString + aux.getElemento().toString();
+            } else {
+                toString = toString + "," + aux.getElemento().toString();
             }
+            aux = aux.getEnlace();
         }
+
         return toString;
     }
 
     public Lista obtenerMultiplos(int num) {
-
         Lista listaMultiplos = new Lista();
         if (num >= 1) {
             int i = 1;
