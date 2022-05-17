@@ -50,6 +50,25 @@ public class ArbolGen {
         }
     }
 
+    public Lista listarPosorden() {
+        Lista ls = new Lista();
+        if (this.raiz != null) {
+            listarPosordenPR(this.raiz, ls);
+        }
+        return ls;
+    }
+
+    private void listarPosordenPR(NodoGen nodo, Lista ls) {
+        if (nodo != null) {
+            NodoGen aux = nodo.getHijoIzquierdo();
+            while (aux != null) {
+                listarPosordenPR(aux, ls);
+                aux = aux.getHermanoDerecho();
+            }
+            ls.insertar(nodo.getElem(), ls.longitud() + 1);
+        }
+    }
+
     public Lista listarPreorden() {
         Lista salida = new Lista();
         listarPreordenPR(this.raiz, salida);
@@ -158,7 +177,7 @@ public class ArbolGen {
             while (aux != null && padre == null) {
                 if (aux.getElem().equals(buscado)) {
                     padre = nodo;
-                }else{
+                } else {
                     if (aux.getHijoIzquierdo() != null) {
                         padre = padrePR(aux, buscado);
                     }
@@ -169,4 +188,85 @@ public class ArbolGen {
         return padre;
     }
 
+    public Lista ancestros(Object buscado) {
+        Lista ls = new Lista();
+        if (this.raiz != null) {
+            ancestrosPR(this.raiz, ls, buscado);
+        }
+        return ls;
+    }
+
+    public int altura() {
+        int altura = -1;
+        if (this.raiz != null) {
+            altura = alturaPR(this.raiz);
+        }
+        return altura;
+    }
+
+    private int alturaPR(NodoGen nodo) {
+        int altura = 0;
+        int alturaMasGrande = 0;
+        if (nodo.getHijoIzquierdo() != null) {
+            NodoGen aux = nodo.getHijoIzquierdo();
+            while (aux != null) {
+                altura = alturaPR(aux);
+                if (altura > alturaMasGrande) {
+                    alturaMasGrande = altura;
+                }
+                aux = aux.getHermanoDerecho();
+            }
+            altura = alturaMasGrande + 1;
+        }
+        return altura;
+    }
+
+    private boolean ancestrosPR(NodoGen nodo, Lista ls, Object buscado) {
+        boolean encontro = false;
+        if (nodo != null) {
+            if (nodo.getElem().equals(buscado)) {
+                ls.insertar(nodo.getElem(), ls.longitud() + 1);
+                encontro = true;
+            } else {
+                NodoGen aux = nodo.getHijoIzquierdo();
+                while (aux != null && !encontro) {
+                    encontro = encontro || ancestrosPR(aux, ls, buscado);
+                    aux = aux.getHermanoDerecho();
+                }
+                if (encontro) {
+                    ls.insertar(nodo.getElem(), ls.longitud() + 1);
+                }
+            }
+        }
+        return encontro;
+    }
+
+    public int nivel(Object buscado) {
+        int nivel = -1;
+        if (this.raiz != null) {
+            nivel = nivelPR(this.raiz, buscado, 0);
+        }
+        return nivel;
+    }
+
+    private int nivelPR(NodoGen nodo, Object buscado, int nivelActual) {
+        int nivel = -1;
+        if (nodo != null) {
+            if (nodo.getElem().equals(buscado)) {
+                nivel = nivelActual;
+            }else{
+                NodoGen aux = nodo.getHijoIzquierdo();
+                while(aux != null){
+                    nivel = nivelPR(aux, buscado, nivelActual + 1);
+                    System.out.println(nivel);
+                    if (nivel != -1) {
+                        aux = null;
+                    }else{
+                        aux = aux.getHermanoDerecho();
+                    }
+                }
+            }
+        }
+        return nivel;
+    }
 }
