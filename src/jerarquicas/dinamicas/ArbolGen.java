@@ -254,19 +254,79 @@ public class ArbolGen {
         if (nodo != null) {
             if (nodo.getElem().equals(buscado)) {
                 nivel = nivelActual;
-            }else{
+            } else {
                 NodoGen aux = nodo.getHijoIzquierdo();
-                while(aux != null){
+                while (aux != null) {
                     nivel = nivelPR(aux, buscado, nivelActual + 1);
-                    System.out.println(nivel);
                     if (nivel != -1) {
                         aux = null;
-                    }else{
+                    } else {
                         aux = aux.getHermanoDerecho();
                     }
                 }
             }
         }
         return nivel;
+    }
+
+    public Lista frontera() {
+        Lista lista = new Lista();
+        frontera(this.raiz, lista);
+        return lista;
+    }
+
+    private void frontera(NodoGen nodo, Lista lista) {
+        while (nodo != null) {
+            if (nodo.getHijoIzquierdo() == null) {
+                lista.insertar(nodo.getElem(), lista.longitud() + 1);
+            } else {
+                frontera(nodo.getHijoIzquierdo(), lista);
+            }
+            nodo = nodo.getHermanoDerecho();
+        }
+    }
+
+    @Override
+    public ArbolGen clone() {
+        ArbolGen arbol = new ArbolGen();
+        if (raiz != null) {
+            arbol.raiz = new NodoGen(null, null, null);
+            clone(this.raiz, arbol.raiz);
+        }
+        return arbol;
+    }
+
+    private void clone(NodoGen src, NodoGen dst) {
+        while (src != null) {
+            dst.setElem(src.getElem());
+            if (src.getHijoIzquierdo() != null) {
+                dst.setHijoIzquierdo(new NodoGen(null, null, null));
+                clone(src.getHijoIzquierdo(), dst.getHijoIzquierdo());
+            }
+            if (src.getHermanoDerecho() != null) {
+                dst.setHermanoDerecho(new NodoGen(src.getElem(), null, null));
+            }
+
+            dst = dst.getHermanoDerecho();
+            src = src.getHermanoDerecho();
+        }
+    }
+
+    public Lista listarPorNiveles() {
+        Lista ls = new Lista();
+        Cola cola = new Cola();
+        cola.poner(this.raiz);
+        while (!cola.esVacia()) {
+            NodoGen aux = (NodoGen) cola.obtenerFrente();
+            ls.insertar(aux.getElem(), ls.longitud() + 1);
+            cola.sacar();
+            aux = aux.getHijoIzquierdo();
+            while (aux != null) {
+                cola.poner(aux);
+                aux = aux.getHermanoDerecho();
+            }
+
+        }
+        return ls;
     }
 }
