@@ -15,6 +15,7 @@ public class Cola {
 
     public boolean poner(Object elem) {
         boolean exito;
+        //exito depende de si la cola está llena o no
         if (this.frente != (this.fin + 1) % TAMANIO) {
             this.arreglo[this.fin] = elem;
             this.fin = (this.fin + 1) % TAMANIO;
@@ -27,6 +28,7 @@ public class Cola {
 
     public boolean sacar() {
         boolean exito;
+        //exito depende de si la cola está vacía o no
         if (this.frente != this.fin) {
             arreglo[frente] = null;
             frente = (frente + 1) % TAMANIO;

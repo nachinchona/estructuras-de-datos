@@ -13,6 +13,7 @@ public class ArbolGen {
     public boolean pertenece(Object buscado) {
         boolean pertenece = false;
         NodoGen nodo = obtenerNodo(this.raiz, buscado);
+        //si el nodo retornado es distinto de null, el objeto se encuentra en el arbol
         if (nodo != null) {
             pertenece = true;
         }
@@ -35,10 +36,13 @@ public class ArbolGen {
 
     private void listarInordenPR(NodoGen nodo, Lista ls) {
         if (nodo != null) {
+            //primero visito los hijos izquierdos
             if (nodo.getHijoIzquierdo() != null) {
                 listarInordenPR(nodo.getHijoIzquierdo(), ls);
             }
+            //luego al padre
             ls.insertar(nodo.getElem(), ls.longitud() + 1);
+            //luego a los hermanos
             if (nodo.getHijoIzquierdo() != null) {
                 NodoGen aux = nodo.getHijoIzquierdo().getHermanoDerecho();
                 while (aux != null) {
@@ -61,10 +65,12 @@ public class ArbolGen {
     private void listarPosordenPR(NodoGen nodo, Lista ls) {
         if (nodo != null) {
             NodoGen aux = nodo.getHijoIzquierdo();
+            //primero se visitan los hijos
             while (aux != null) {
                 listarPosordenPR(aux, ls);
                 aux = aux.getHermanoDerecho();
             }
+            //por ultimo la raiz
             ls.insertar(nodo.getElem(), ls.longitud() + 1);
         }
     }
@@ -77,7 +83,9 @@ public class ArbolGen {
 
     private void listarPreordenPR(NodoGen nodo, Lista ls) {
         if (nodo != null) {
+            //primero se visita la raiz
             ls.insertar(nodo.getElem(), ls.longitud() + 1);
+            //luego los hijos
             if (nodo.getHijoIzquierdo() != null) {
                 NodoGen aux = nodo.getHijoIzquierdo();
                 while (aux != null) {
@@ -93,11 +101,13 @@ public class ArbolGen {
         Cola cola = new Cola();
         cola.poner(this.raiz);
         while (!cola.esVacia()) {
+            //inserto el elemento del frente de la cola
             NodoGen aux = (NodoGen) cola.obtenerFrente();
             ls.insertar(aux.getElem(), ls.longitud() + 1);
             cola.sacar();
             aux = aux.getHijoIzquierdo();
             while (aux != null) {
+                //agrego en la cola todos los hijos tenga el nodo
                 cola.poner(aux);
                 aux = aux.getHermanoDerecho();
             }
@@ -132,21 +142,23 @@ public class ArbolGen {
     public boolean insertar(Object nuevo, Object padre) {
         boolean exito = true;
         if (this.raiz == null) {
+            //si el arbol es vacio, se crea su raiz
             this.raiz = new NodoGen(nuevo, null, null);
         } else {
             NodoGen nodoPadre = obtenerNodo(this.raiz, padre);
             if (nodoPadre != null) {
+                //dos casos, si no tiene hijo izquierdo se crea, sino se le agrega un hermano
                 if (nodoPadre.getHijoIzquierdo() == null) {
                     nodoPadre.setHijoIzquierdo(new NodoGen(nuevo, null, null));
                 } else {
                     NodoGen aux = nodoPadre.getHijoIzquierdo();
                     while (aux.getHermanoDerecho() != null) {
-                        //lo penso el tomi
                         aux = aux.getHermanoDerecho();
                     }
                     aux.setHermanoDerecho(new NodoGen(nuevo, null, null));
                 }
             } else {
+                //no encontro al nodo padre
                 exito = false;
             }
         }
@@ -240,6 +252,7 @@ public class ArbolGen {
     }
 
     private boolean ancestrosPR(NodoGen nodo, Lista ls, Object buscado) {
+        //metodo recursivo que retorna verdadero o falso dependiendo de si encuentra el elemento buscado
         boolean encontro = false;
         if (nodo != null) {
             if (nodo.getElem().equals(buscado)) {
@@ -252,6 +265,7 @@ public class ArbolGen {
                     aux = aux.getHermanoDerecho();
                 }
                 if (encontro) {
+                    //si se encontro el elemento, se insertan en la lista los ancestros
                     ls.insertar(nodo.getElem(), ls.longitud() + 1);
                 }
             }
@@ -274,11 +288,11 @@ public class ArbolGen {
                 nivel = nivelActual;
             } else {
                 NodoGen aux = nodo.getHijoIzquierdo();
-                while (aux != null) {
+                boolean encontro = false;
+                while (aux != null && !encontro) {
                     nivel = nivelPR(aux, buscado, nivelActual + 1);
-                    if (nivel != -1) {
-                        aux = null;
-                    } else {
+                    encontro = nivel != -1;
+                    if (!encontro) {
                         aux = aux.getHermanoDerecho();
                     }
                 }
@@ -296,6 +310,7 @@ public class ArbolGen {
     private void frontera(NodoGen nodo, Lista lista) {
         while (nodo != null) {
             if (nodo.getHijoIzquierdo() == null) {
+                //es hoja, se aniade a la lista
                 lista.insertar(nodo.getElem(), lista.longitud() + 1);
             } else {
                 frontera(nodo.getHijoIzquierdo(), lista);
@@ -336,6 +351,7 @@ public class ArbolGen {
     }
 
     private boolean sonFronteraPR(NodoGen nodo, Lista unaLista) {
+        //precondicion: los elementos de la lista no se repiten
         boolean sonFrontera = true;
         while (!unaLista.esVacia() && sonFrontera && nodo != null) {
             if (nodo.getHijoIzquierdo() == null) {
@@ -349,6 +365,7 @@ public class ArbolGen {
             nodo = nodo.getHermanoDerecho();
         }
         if (!unaLista.esVacia()) {
+            //si la lista no se consumio, no es frontera
             sonFrontera = false;
         }
         return sonFrontera;
