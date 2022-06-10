@@ -10,6 +10,42 @@ public class ArbolGen {
         this.raiz = null;
     }
 
+    public boolean verificarCamino(Lista ls) {
+        boolean sigue = verificarCaminoPR(ls.clone(), this.raiz);
+        return sigue;
+    }
+
+    private boolean verificarCaminoPR(Lista ls, NodoGen nodo) {
+        boolean sigue = true;
+        if (nodo != null && !ls.esVacia()) {
+            if (nodo.getElem().equals(ls.recuperar(1))) {
+                ls.eliminar(1);
+                sigue = verificarCaminoPR(ls, nodo.getHijoIzquierdo());
+            }else{
+                NodoGen hermano = nodo.getHermanoDerecho();
+                boolean encontro = false;
+                while(!encontro && hermano != null){
+                    if (hermano.getElem().equals(ls.recuperar(1))) {
+                        encontro = true;
+                    }else{
+                        hermano = hermano.getHermanoDerecho();
+                    }
+                }
+                if (!encontro) {
+                    sigue = false;
+                }else{
+                    ls.eliminar(1);
+                    sigue = verificarCaminoPR(ls, hermano.getHijoIzquierdo());
+                }
+            }
+        }else{
+            if (!ls.esVacia()) {
+                sigue = false;
+            }
+        }
+        return sigue;
+    }
+
     public boolean pertenece(Object buscado) {
         boolean pertenece = false;
         NodoGen nodo = obtenerNodo(this.raiz, buscado);

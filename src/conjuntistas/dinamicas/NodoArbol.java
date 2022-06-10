@@ -4,18 +4,18 @@ package conjuntistas.dinamicas;
  * @author ignacio.navarro
  */
 public class NodoArbol {
-    private Object elem;
+    private Comparable elem;
     private NodoArbol izq;
     private NodoArbol der;
     
     
-    public NodoArbol (Object elem, NodoArbol izq, NodoArbol der){
+    public NodoArbol (Comparable elem, NodoArbol izq, NodoArbol der){
         this.elem = elem;
         this.izq = izq;
         this.der = der;
     }
     
-    public Object getElem (){
+    public Comparable getElem (){
         return this.elem;
     }
     
@@ -27,7 +27,7 @@ public class NodoArbol {
         return this.der;
     }
     
-    public void setElem (Object elem){
+    public void setElem (Comparable elem){
         this.elem = elem;
     }
     
