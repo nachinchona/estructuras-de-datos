@@ -2,136 +2,24 @@ package conjuntistas.dinamicas;
 
 import lineales.dinamicas.Lista;
 
-public class ArbolBB {
-
-    private NodoArbol raiz;
-
-    public ArbolBB() {
+public class ArbolAVL {
+    private NodoAVL raiz;
+    
+    public ArbolAVL(){
         this.raiz = null;
     }
-
-    public ArbolBB clonarParteInvertida(Comparable elem) {
-        ArbolBB arbolito = new ArbolBB();
-        NodoArbol nuevo;
-        NodoArbol aux = obtenerNodo(this.raiz, elem);
-        if (aux != null) {
-            nuevo = new NodoArbol(aux.getElem(), null, null);
-            arbolito.raiz = nuevo;
-            clonarParteInvertidaPR(nuevo, aux);
-        }
-        return arbolito;
-    }
-
-    private NodoArbol obtenerNodo(NodoArbol nodo, Comparable elem) {
-        NodoArbol retorno = null;
-        if (nodo != null) {
-            if (nodo.getElem().equals(elem)) {
-                retorno = nodo;
-            } else {
-                if (nodo.getElem().compareTo(elem) < 0) {
-                    retorno = obtenerNodo(nodo.getDerecho(), elem);
-                } else {
-                    retorno = obtenerNodo(nodo.getIzquierdo(), elem);
-                }
-            }
-        }
-        return retorno;
-    }
-
-    private void clonarParteInvertidaPR(NodoArbol nuevo, NodoArbol nodo) {
-        if (nodo != null) {
-            if (nodo.getDerecho() != null) {
-                nuevo.setIzquierdo(new NodoArbol(nodo.getDerecho().getElem(), null, null));
-                clonarParteInvertidaPR(nuevo.getIzquierdo(), nodo.getDerecho());
-            }
-            if (nodo.getIzquierdo() != null) {
-                nuevo.setDerecho(new NodoArbol(nodo.getIzquierdo().getElem(), null, null));
-                clonarParteInvertidaPR(nuevo.getDerecho(), nodo.getIzquierdo());
-            }
-        }
-    }
-
-    public int diferenciaCandidatos(Comparable elem) {
-        int diferencia = -1;
-        if (this.raiz != null) {
-            diferencia = diferenciaCandidatosPR(this.raiz, elem);
-        }
-        return diferencia;
-    }
-
-    private int diferenciaCandidatosPR(NodoArbol nodo, Comparable elem) {
-        int diferencia = -1;
-        if (nodo != null) {
-            if (elem.equals(nodo.getElem())) {
-                if (nodo.getIzquierdo() != null && nodo.getDerecho() != null) {
-                    int menorDerecho;
-                    int mayorIzquierdo;
-                    NodoArbol izq = nodo.getIzquierdo();
-                    NodoArbol der = nodo.getDerecho();
-                    while (izq.getDerecho() != null) {
-                        izq = izq.getDerecho();
-                    }
-                    while (der.getIzquierdo() != null) {
-                        der = der.getIzquierdo();
-                    }
-                    mayorIzquierdo = (int) izq.getElem();
-                    menorDerecho = (int) der.getElem();
-                    diferencia = menorDerecho - mayorIzquierdo;
-                } else {
-                    diferencia = -2;
-                }
-            }
-        }
-        return diferencia;
-    }
-
-    public Lista listarMenores(Comparable elem) {
-        Lista ls = new Lista();
-        listarMenoresPR(this.raiz, elem, ls);
-        return ls;
-    }
-
-    private void listarMenoresPR(NodoArbol nodo, Comparable elem, Lista ls) {
-        if (nodo != null) {
-            if (nodo.getElem().compareTo(elem) < 0) {
-                ls.insertar(nodo.getElem(), ls.longitud() + 1);
-                listarMenoresPR(nodo.getIzquierdo(), elem, ls);
-                listarMenoresPR(nodo.getDerecho(), elem, ls);
-            } else {
-                listarMenoresPR(nodo.getIzquierdo(), elem, ls);
-            }
-        }
-    }
-
-    public Lista listarMayorIgual(Comparable elem) {
-        Lista ls = new Lista();
-        listarMayorIgualPR(this.raiz, elem, ls);
-        return ls;
-    }
-
-    private void listarMayorIgualPR(NodoArbol nodo, Comparable elem, Lista ls) {
-        if (nodo != null) {
-            if (nodo.getElem().equals(elem) || nodo.getElem().compareTo(elem) > 0) {
-                listarMayorIgualPR(nodo.getDerecho(), elem, ls);
-                ls.insertar(nodo.getElem(), ls.longitud() + 1);
-                listarMayorIgualPR(nodo.getIzquierdo(), elem, ls);
-            } else {
-                listarMayorIgualPR(nodo.getDerecho(), elem, ls);
-            }
-        }
-    }
-
+    
     public boolean insertar(Comparable elem) {
         boolean exito = true;
         if (this.raiz == null) {
-            this.raiz = new NodoArbol(elem, null, null);
+            this.raiz = new NodoAVL(elem, null, null);
         } else {
             exito = insertarPR(this.raiz, elem);
         }
         return exito;
     }
 
-    private boolean insertarPR(NodoArbol nodo, Comparable elem) {
+    private boolean insertarPR(NodoAVL nodo, Comparable elem) {
         boolean exito = true;
         if (nodo != null) {
             if (elem.compareTo(nodo.getElem()) == 0) {
@@ -142,17 +30,20 @@ public class ArbolBB {
                     if (nodo.getIzquierdo() != null) {
                         exito = insertarPR(nodo.getIzquierdo(), elem);
                     } else {
-                        nodo.setIzquierdo(new NodoArbol(elem, null, null));
+                        nodo.setIzquierdo(new NodoAVL(elem, null, null));
                     }
                 } else {
                     //es mayor
                     if (nodo.getDerecho() != null) {
                         exito = insertarPR(nodo.getDerecho(), elem);
                     } else {
-                        nodo.setDerecho(new NodoArbol(elem, null, null));
+                        nodo.setDerecho(new NodoAVL(elem, null, null));
                     }
                 }
             }
+        }
+        if (exito) {
+            nodo.recalcularAltura();
         }
         return exito;
     }
@@ -165,7 +56,7 @@ public class ArbolBB {
         return exito;
     }
 
-    private boolean eliminarPR(NodoArbol padre, NodoArbol nodo, Comparable elem) {
+    private boolean eliminarPR(NodoAVL padre, NodoAVL nodo, Comparable elem) {
         boolean exito = false;
         if (nodo != null) {
             if (nodo.getElem().compareTo(elem) == 0) {
@@ -182,7 +73,7 @@ public class ArbolBB {
         return exito;
     }
 
-    private int determinarCaso(NodoArbol nodo) {
+    private int determinarCaso(NodoAVL nodo) {
         int caso;
         if (nodo.getDerecho() != null) {
             if (nodo.getIzquierdo() != null) {
@@ -204,7 +95,7 @@ public class ArbolBB {
         return caso;
     }
 
-    private void eliminarSegunCaso(NodoArbol padre, NodoArbol nodo, int caso) {
+    private void eliminarSegunCaso(NodoAVL padre, NodoAVL nodo, int caso) {
         System.out.println(caso);
         switch (caso) {
             case 1:
@@ -219,8 +110,8 @@ public class ArbolBB {
                 }
                 break;
             case 3:
-                NodoArbol padreAux = nodo;
-                NodoArbol aux = nodo.getIzquierdo();
+                NodoAVL padreAux = nodo;
+                NodoAVL aux = nodo.getIzquierdo();
                 if (aux.getDerecho() != null) {
                     padreAux = nodo.getIzquierdo();
                 }
@@ -241,7 +132,7 @@ public class ArbolBB {
         }
     }
 
-    private void intercambiar(NodoArbol nodo1, NodoArbol nodo2) {
+    private void intercambiar(NodoAVL nodo1, NodoAVL nodo2) {
         nodo1.setElem(nodo2.getElem());
     }
 
@@ -253,7 +144,7 @@ public class ArbolBB {
         return pertenece;
     }
 
-    private boolean pertenecePR(NodoArbol nodo, Comparable elem) {
+    private boolean pertenecePR(NodoAVL nodo, Comparable elem) {
         boolean pertenece = false;
         if (nodo != null) {
             if (nodo.getElem().compareTo(elem) == 0) {
@@ -287,7 +178,7 @@ public class ArbolBB {
     public Comparable minimoElem() {
         Comparable elem = null;
         if (this.raiz != null) {
-            NodoArbol aux = this.raiz;
+            NodoAVL aux = this.raiz;
             while (aux.getIzquierdo() != null) {
                 aux = aux.getIzquierdo();
             }
@@ -299,7 +190,7 @@ public class ArbolBB {
     public Comparable maximoElem() {
         Comparable elem = null;
         if (this.raiz != null) {
-            NodoArbol aux = this.raiz;
+            NodoAVL aux = this.raiz;
             while (aux.getDerecho() != null) {
                 aux = aux.getDerecho();
             }
@@ -308,7 +199,7 @@ public class ArbolBB {
         return elem;
     }
 
-    private void listarInordenPR(NodoArbol nodo, Lista temp) {
+    private void listarInordenPR(NodoAVL nodo, Lista temp) {
         if (nodo != null) {
             listarInordenPR(nodo.getIzquierdo(), temp);
             temp.insertar(nodo.getElem(), temp.longitud() + 1);
@@ -316,12 +207,12 @@ public class ArbolBB {
         }
     }
 
-    private String toStringPR(NodoArbol nodo) {
+    private String toStringPR(NodoAVL nodo) {
         String toString = "Arbol vacio";
         if (nodo != null) {
             toString = nodo.getElem().toString();
-            NodoArbol hijoIzq = nodo.getIzquierdo();
-            NodoArbol hijoDer = nodo.getDerecho();
+            NodoAVL hijoIzq = nodo.getIzquierdo();
+            NodoAVL hijoDer = nodo.getDerecho();
             if (hijoIzq != null) {
                 toString = toString + ", H.I: " + hijoIzq.getElem().toString();
 

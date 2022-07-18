@@ -10,6 +10,111 @@ public class ArbolGen {
         this.raiz = null;
     }
 
+    public Lista listarHastaNivel(int nivel) {
+        Lista ls = new Lista();
+        if (this.raiz != null) {
+            listarPorNivelPR(this.raiz, nivel, 0, ls);
+        }
+        return ls;
+    }
+
+    private void listarPorNivelPR(NodoGen nodo, int nivel, int nivelActual, Lista ls) {
+        if (nodo != null) {
+            if (nivelActual <= nivel) {
+                ls.insertar(nodo.getElem(), ls.longitud() + 1);
+                NodoGen aux = nodo.getHijoIzquierdo();
+                while (aux != null) {
+                    listarPorNivelPR(aux, nivel, nivelActual + 1, ls);
+                    aux = aux.getHermanoDerecho();
+                }
+            }
+        }
+    }
+
+    public void insertarEnPos(Object elem, Object padre, int pos) {
+        if (this.raiz != null) {
+            insertarEnPosPR(this.raiz, elem, padre, pos);
+        }
+    }
+
+    private void insertarEnPosPR(NodoGen nodo, Object elem, Object padre, int pos) {
+        if (nodo != null) {
+            if (nodo.getElem().equals(padre)) {
+                NodoGen aux = nodo.getHijoIzquierdo();
+                int i = 1;
+                while (aux.getHermanoDerecho() != null && i <= pos) {
+                    if (i == pos - 1) {
+                        NodoGen nuevo = new NodoGen(elem, null, null);
+                        NodoGen temp = aux.getHermanoDerecho();
+                        aux.setHermanoDerecho(nuevo);
+                        nuevo.setHermanoDerecho(temp);
+                    } else {
+                        aux = aux.getHermanoDerecho();
+                    }
+                    i++;
+                }
+            }
+        }
+    }
+
+    public boolean eliminar(Object elem) {
+        boolean exito = true;
+        if (this.raiz != null) {
+            if (this.raiz.getElem().equals(elem)) {
+                this.raiz = null;
+            } else {
+                exito = eliminarPR(null, this.raiz, elem);
+            }
+        }
+        return exito;
+    }
+
+    private boolean eliminarPR(NodoGen padre, NodoGen nodo, Object elem) {
+        boolean exito = false;
+        if (nodo != null) {
+            if (nodo.getElem().equals(elem)) {
+                if (nodo.getHermanoDerecho() == null) {
+                    padre.setHijoIzquierdo(null);
+                } else {
+                    padre.setHijoIzquierdo(nodo.getHermanoDerecho());
+                }
+            } else {
+                NodoGen papa = nodo;
+                NodoGen aux = nodo.getHermanoDerecho();
+                while (aux != null && !exito) {
+                    if (aux.getElem().equals(elem)) {
+                        papa.setHermanoDerecho(aux.getHermanoDerecho());
+                        exito = true;
+                    } else {
+                        papa = aux;
+                        aux = aux.getHermanoDerecho();
+                    }
+                }
+                if (!exito) {
+                    System.out.println("tuki");
+                    exito = eliminarPR(nodo, nodo.getHijoIzquierdo(), elem);
+                }
+            }
+        }
+        return exito;
+    }
+
+    public Lista listarEntreNiveles(int niv1, int niv2) {
+        Lista ls = new Lista();
+
+        return ls;
+    }
+
+    private int listarEntreNivelesPR(NodoGen nodo, int niv1, int niv2, Lista ls) {
+        int nivelActual = 0;
+        if (nodo != null) {
+            if (true) {
+
+            }
+        }
+        return nivelActual;
+    }
+
     public boolean verificarCamino(Lista ls) {
         boolean sigue = verificarCaminoPR(ls.clone(), this.raiz);
         return sigue;
@@ -21,24 +126,24 @@ public class ArbolGen {
             if (nodo.getElem().equals(ls.recuperar(1))) {
                 ls.eliminar(1);
                 sigue = verificarCaminoPR(ls, nodo.getHijoIzquierdo());
-            }else{
+            } else {
                 NodoGen hermano = nodo.getHermanoDerecho();
                 boolean encontro = false;
-                while(!encontro && hermano != null){
+                while (!encontro && hermano != null) {
                     if (hermano.getElem().equals(ls.recuperar(1))) {
                         encontro = true;
-                    }else{
+                    } else {
                         hermano = hermano.getHermanoDerecho();
                     }
                 }
                 if (!encontro) {
                     sigue = false;
-                }else{
+                } else {
                     ls.eliminar(1);
                     sigue = verificarCaminoPR(ls, hermano.getHijoIzquierdo());
                 }
             }
-        }else{
+        } else {
             if (!ls.esVacia()) {
                 sigue = false;
             }

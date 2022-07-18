@@ -14,12 +14,9 @@ public class TestABB {
         arbol.insertar(3);
         arbol.insertar(6);
         System.out.println(arbol.toString());
-        System.out.println(arbol.listar().toString());
-        System.out.println(arbol.eliminar(2));
-        System.out.println(arbol.toString());
-        System.out.println(arbol.listar().toString());
-        System.out.println(arbol.minimoElem());
-        System.out.println(arbol.maximoElem());
+        System.out.println("");
+        System.out.println("");
+        System.out.println(arbol.listarMayorIgual(7));
     }
 
 }
